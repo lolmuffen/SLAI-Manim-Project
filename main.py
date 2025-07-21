@@ -1,6 +1,4 @@
 from manim import *
-import math
-
 
 class AndGateSymbol(VMobject):
 
@@ -121,24 +119,24 @@ class Transistor(VMobject):
 
 class Play(Scene):
     def construct(self):
-        # transistor = Transistor(line_straight=True)
-        # self.play(Create(transistor))
-        # transistorText = Text("MOSFET TRANSISTOR")
-        # transistorText.move_to(DOWN)
-        # self.play(FadeIn(transistorText))
+        transistor = Transistor(line_straight=True)
+        self.play(Create(transistor))
+        transistorText = Text("MOSFET TRANSISTOR")
+        transistorText.move_to(DOWN)
+        self.play(FadeIn(transistorText))
 
-        # #END SCENE 1
-        # #############################################################
+        #END SCENE 1
+        #############################################################
 
-        # self.wait(1)#14
+        self.wait(1)#14
 
-        # TCT = Text("Silicon to Software", font_size=72,).shift([1.25,-.5,0])
+        TCT = Text("Silicon to Software", font_size=72,).shift([1.25,-.5,0])
 
-        # self.play(transistor.animate().scale(.5).move_to([-4.5,0,0]), FadeOut(transistorText), FadeIn(TCT), lag_ratio=0.25)
+        self.play(transistor.animate().scale(.5).move_to([-4.5,0,0]), FadeOut(transistorText), FadeIn(TCT), lag_ratio=0.25)
 
-        # self.wait(1)
+        self.wait(1)
 
-        # self.play(FadeOut(TCT), lag_ratio=0.25)
+        self.play(FadeOut(TCT), lag_ratio=0.25)
 
         not_gate_text = Text("NOT").shift([-5,3,0])
         or_gate_text = Text("OR").shift([-2,3,0])
@@ -146,176 +144,176 @@ class Play(Scene):
         xor_gate_text = Text("XOR").shift([5,3,0])
 
         gate_text_anims = [FadeIn(not_gate_text), FadeIn(or_gate_text), FadeIn(and_gate_text),FadeIn(xor_gate_text)]
-        # not_gate_transistor = Transistor(line_straight=False, shift_offset=[-5,-1,0], scale_factor=0.25, rotation=PI/2, invert_letters=True)
+        not_gate_transistor = Transistor(line_straight=False, shift_offset=[-5,-1,0], scale_factor=0.25, rotation=PI/2, invert_letters=True)
 
-        # not_gate_io_text = [Text("A", font_size=16).shift(not_gate_transistor.gate_middle_line.get_end() + [0, 0.2, 0]), 
-        #                     Text("Out", font_size=16).shift(not_gate_transistor.right_horz_line.get_end() + [-0.25, -0.1, 0])]
+        not_gate_io_text = [Text("A", font_size=16).shift(not_gate_transistor.gate_middle_line.get_end() + [0, 0.2, 0]), 
+                            Text("Out", font_size=16).shift(not_gate_transistor.right_horz_line.get_end() + [-0.25, -0.1, 0])]
         
         self.play(*gate_text_anims)
 
-        # self.play(FadeOut(transistor), FadeIn(not_gate_transistor), *[Create(anim) for anim in not_gate_io_text])
+        self.play(FadeOut(transistor), FadeIn(not_gate_transistor), *[Create(anim) for anim in not_gate_io_text])
 
-        # self.play(AnimationGroup(
-        #     AnimationGroup(
-        #         Indicate(not_gate_transistor.gate_middle_line, color=YELLOW, run_time=5), 
-        #         Indicate(not_gate_transistor.gate_bottom_line, color=YELLOW, run_time=5),
-        #         ),
-        #     AnimationGroup( 
-        #         Indicate(not_gate_transistor.left_horz_line),
-        #         Indicate(not_gate_transistor.left_line),
-        #         Indicate(not_gate_transistor.left_text), 
-        #         Indicate(not_gate_transistor.left_rectangle),
-        #         Indicate(not_gate_transistor.middle_text, color=RED), 
-        #         Indicate(not_gate_transistor.middle_rectangle, color=RED),
-        #         lag_ratio=.2,
-        #         run_time=3
-        #         ),
-        #     lag_ratio = .25,
-        #     run_time=6
-        #     )
-        #     )
+        self.play(AnimationGroup(
+            AnimationGroup(
+                Indicate(not_gate_transistor.gate_middle_line, color=YELLOW, run_time=5), 
+                Indicate(not_gate_transistor.gate_bottom_line, color=YELLOW, run_time=5),
+                ),
+            AnimationGroup( 
+                Indicate(not_gate_transistor.left_horz_line),
+                Indicate(not_gate_transistor.left_line),
+                Indicate(not_gate_transistor.left_text), 
+                Indicate(not_gate_transistor.left_rectangle),
+                Indicate(not_gate_transistor.middle_text, color=RED), 
+                Indicate(not_gate_transistor.middle_rectangle, color=RED),
+                lag_ratio=.2,
+                run_time=3
+                ),
+            lag_ratio = .25,
+            run_time=6
+            )
+            )
         
-        # or_gate_transistor = Transistor(line_straight=False, shift_offset=[-2,-1.5,0], scale_factor=0.25, rotation=PI/2)         
-        # or_gate_transistor1 = Transistor(line_straight=False, shift_offset=[-2,0.5,0], scale_factor=0.25, rotation=PI/2)  
-        # or_gate_around_line1 = Line(or_gate_transistor.left_horz_line.get_end() + [0, 0, 0], or_gate_transistor.left_horz_line.get_end() + [1, 0, 0])
-        # or_gate_around_line2 = Line(or_gate_transistor.right_horz_line.get_end() + [-1, 0, 0], or_gate_transistor.right_horz_line.get_end() + [0, 0, 0])
-        # or_gate_around_line3 = Line(or_gate_transistor1.right_horz_line.get_end() + [0, -0.25, 0], or_gate_transistor1.right_horz_line.get_end() + [1, -0.25, 0])
-        # or_gate_around_line4 = Line(or_gate_transistor.left_horz_line.get_end() + [1, 0, 0], or_gate_transistor1.right_horz_line.get_end() + [1, -0.25, 0])
-        # or_gate_io_text = [Text("A", font_size=16).shift(or_gate_transistor.gate_middle_line.get_end() + [0, 0.2, 0]), 
-        #                    Text("B", font_size=16).shift(or_gate_transistor1.gate_middle_line.get_end() + [0, 0.2, 0]), 
-        #                    Text("Out", font_size=16).shift(or_gate_transistor1.right_horz_line.get_end() + [0.25, 0, 0])]   
+        or_gate_transistor = Transistor(line_straight=False, shift_offset=[-2,-1.5,0], scale_factor=0.25, rotation=PI/2)         
+        or_gate_transistor1 = Transistor(line_straight=False, shift_offset=[-2,0.5,0], scale_factor=0.25, rotation=PI/2)  
+        or_gate_around_line1 = Line(or_gate_transistor.left_horz_line.get_end() + [0, 0, 0], or_gate_transistor.left_horz_line.get_end() + [1, 0, 0])
+        or_gate_around_line2 = Line(or_gate_transistor.right_horz_line.get_end() + [-1, 0, 0], or_gate_transistor.right_horz_line.get_end() + [0, 0, 0])
+        or_gate_around_line3 = Line(or_gate_transistor1.right_horz_line.get_end() + [0, -0.25, 0], or_gate_transistor1.right_horz_line.get_end() + [1, -0.25, 0])
+        or_gate_around_line4 = Line(or_gate_transistor.left_horz_line.get_end() + [1, 0, 0], or_gate_transistor1.right_horz_line.get_end() + [1, -0.25, 0])
+        or_gate_io_text = [Text("A", font_size=16).shift(or_gate_transistor.gate_middle_line.get_end() + [0, 0.2, 0]), 
+                           Text("B", font_size=16).shift(or_gate_transistor1.gate_middle_line.get_end() + [0, 0.2, 0]), 
+                           Text("Out", font_size=16).shift(or_gate_transistor1.right_horz_line.get_end() + [0.25, 0, 0])]   
 
-        # self.play(FadeIn(or_gate_transistor1), FadeIn(or_gate_transistor), FadeIn(or_gate_around_line1), FadeIn(or_gate_around_line2), FadeIn(or_gate_around_line3), FadeIn(or_gate_around_line4), *[Create(anim) for anim in or_gate_io_text])
+        self.play(FadeIn(or_gate_transistor1), FadeIn(or_gate_transistor), FadeIn(or_gate_around_line1), FadeIn(or_gate_around_line2), FadeIn(or_gate_around_line3), FadeIn(or_gate_around_line4), *[Create(anim) for anim in or_gate_io_text])
 
-        # self.play(AnimationGroup(
-        #     AnimationGroup(
-        #         Indicate(or_gate_transistor.gate_bottom_line, run_time = 5),
-        #         Indicate(or_gate_transistor.gate_middle_line, run_time = 5),
-        #         Indicate(or_gate_transistor1.gate_bottom_line, run_time = 5),
-        #         Indicate(or_gate_transistor1.gate_middle_line, run_time = 5),
-        #     ),
-        #     AnimationGroup(
-        #         Indicate(or_gate_around_line2),
-        #         Indicate(or_gate_transistor1.right_horz_line),
-        #         Indicate(or_gate_transistor1.right_line),
-        #         Indicate(or_gate_transistor.left_horz_line),
-        #         Indicate(or_gate_transistor.left_line),
-        #         Indicate(or_gate_around_line3),
-        #         Indicate(or_gate_around_line4),
-        #         Indicate(or_gate_transistor.left_rectangle),
-        #         Indicate(or_gate_transistor.middle_rectangle),
-        #         Indicate(or_gate_transistor.right_rectangle),
-        #         Indicate(or_gate_transistor.right_line),
-        #         Indicate(or_gate_transistor.right_horz_line),
-        #         Indicate(or_gate_transistor1.left_horz_line),
-        #         Indicate(or_gate_transistor1.left_line),
-        #         Indicate(or_gate_transistor1.left_rectangle),
-        #         Indicate(or_gate_transistor1.middle_rectangle),
-        #         Indicate(or_gate_transistor1.right_rectangle),
+        self.play(AnimationGroup(
+            AnimationGroup(
+                Indicate(or_gate_transistor.gate_bottom_line, run_time = 5),
+                Indicate(or_gate_transistor.gate_middle_line, run_time = 5),
+                Indicate(or_gate_transistor1.gate_bottom_line, run_time = 5),
+                Indicate(or_gate_transistor1.gate_middle_line, run_time = 5),
+            ),
+            AnimationGroup(
+                Indicate(or_gate_around_line2),
+                Indicate(or_gate_transistor1.right_horz_line),
+                Indicate(or_gate_transistor1.right_line),
+                Indicate(or_gate_transistor.left_horz_line),
+                Indicate(or_gate_transistor.left_line),
+                Indicate(or_gate_around_line3),
+                Indicate(or_gate_around_line4),
+                Indicate(or_gate_transistor.left_rectangle),
+                Indicate(or_gate_transistor.middle_rectangle),
+                Indicate(or_gate_transistor.right_rectangle),
+                Indicate(or_gate_transistor.right_line),
+                Indicate(or_gate_transistor.right_horz_line),
+                Indicate(or_gate_transistor1.left_horz_line),
+                Indicate(or_gate_transistor1.left_line),
+                Indicate(or_gate_transistor1.left_rectangle),
+                Indicate(or_gate_transistor1.middle_rectangle),
+                Indicate(or_gate_transistor1.right_rectangle),
                 
                 
-        #         lag_ratio=.2,
-        #         run_time=3
-        #     ),
-        # lag_ratio=.25,
-        # run_time=5
-        # )
-        # )
-        # and_gate = VGroup()
-        # and_gate_transistor = Transistor(line_straight=False, shift_offset=[2,-1.5,0], scale_factor=0.25, rotation=PI/2)         
-        # and_gate_transistor1 = Transistor(line_straight=False, shift_offset=[2,0.5,0], scale_factor=0.25, rotation=PI/2)
-        # and_gate_io_text = [Text("A", font_size=16).shift(and_gate_transistor.gate_middle_line.get_end() + [0, 0.2, 0]), 
-        #                    Text("B", font_size=16).shift(and_gate_transistor1.gate_middle_line.get_end() + [0, 0.2, 0]), 
-        #                    Text("Out", font_size=16).shift(and_gate_transistor1.right_horz_line.get_end() + [0.25, 0.25, 0])]
+                lag_ratio=.2,
+                run_time=3
+            ),
+        lag_ratio=.25,
+        run_time=5
+        )
+        )
+        and_gate = VGroup()
+        and_gate_transistor = Transistor(line_straight=False, shift_offset=[2,-1.5,0], scale_factor=0.25, rotation=PI/2)         
+        and_gate_transistor1 = Transistor(line_straight=False, shift_offset=[2,0.5,0], scale_factor=0.25, rotation=PI/2)
+        and_gate_io_text = [Text("A", font_size=16).shift(and_gate_transistor.gate_middle_line.get_end() + [0, 0.2, 0]), 
+                           Text("B", font_size=16).shift(and_gate_transistor1.gate_middle_line.get_end() + [0, 0.2, 0]), 
+                           Text("Out", font_size=16).shift(and_gate_transistor1.right_horz_line.get_end() + [0.25, 0.25, 0])]
 
-        # and_gate.add(and_gate_io_text, and_gate_transistor, and_gate_transistor1)
+        and_gate.add(and_gate_io_text, and_gate_transistor, and_gate_transistor1)
 
-        # self.play(FadeIn(and_gate_transistor1), FadeIn(and_gate_transistor), *[Create(anim) for anim in and_gate_io_text])
-        # self.play(AnimationGroup(
-        #     AnimationGroup(
-        #         Indicate(and_gate_transistor.gate_bottom_line, run_time=5),
-        #         Indicate(and_gate_transistor.gate_middle_line, run_time=5),
-        #         Indicate(and_gate_transistor1.gate_bottom_line, run_time=5),
-        #         Indicate(and_gate_transistor1.gate_middle_line, run_time=5),
-        #                    ),
-        #     AnimationGroup(
-        #         Indicate(and_gate_transistor.left_horz_line),
-        #         Indicate(and_gate_transistor.left_line),
-        #         Indicate(and_gate_transistor.left_rectangle),
-        #         Indicate(and_gate_transistor.middle_rectangle),
-        #         Indicate(and_gate_transistor.right_rectangle),
-        #         Indicate(and_gate_transistor.right_line),
-        #         Indicate(and_gate_transistor.right_horz_line),
-        #         Indicate(and_gate_transistor1.left_horz_line),
-        #         Indicate(and_gate_transistor1.left_line),
-        #         Indicate(and_gate_transistor1.left_rectangle),
-        #         Indicate(and_gate_transistor1.middle_rectangle),
-        #         Indicate(and_gate_transistor1.right_rectangle),
-        #         Indicate(and_gate_transistor1.right_line),
-        #         Indicate(and_gate_transistor1.right_horz_line),
-        #         run_time=3,
-        #         lag_ratio=.2,
-        #     ),
-        # lag_ratio = .25,
-        # run_time=6
-        # ), 
-        # )
+        self.play(FadeIn(and_gate_transistor1), FadeIn(and_gate_transistor), *[Create(anim) for anim in and_gate_io_text])
+        self.play(AnimationGroup(
+            AnimationGroup(
+                Indicate(and_gate_transistor.gate_bottom_line, run_time=5),
+                Indicate(and_gate_transistor.gate_middle_line, run_time=5),
+                Indicate(and_gate_transistor1.gate_bottom_line, run_time=5),
+                Indicate(and_gate_transistor1.gate_middle_line, run_time=5),
+                           ),
+            AnimationGroup(
+                Indicate(and_gate_transistor.left_horz_line),
+                Indicate(and_gate_transistor.left_line),
+                Indicate(and_gate_transistor.left_rectangle),
+                Indicate(and_gate_transistor.middle_rectangle),
+                Indicate(and_gate_transistor.right_rectangle),
+                Indicate(and_gate_transistor.right_line),
+                Indicate(and_gate_transistor.right_horz_line),
+                Indicate(and_gate_transistor1.left_horz_line),
+                Indicate(and_gate_transistor1.left_line),
+                Indicate(and_gate_transistor1.left_rectangle),
+                Indicate(and_gate_transistor1.middle_rectangle),
+                Indicate(and_gate_transistor1.right_rectangle),
+                Indicate(and_gate_transistor1.right_line),
+                Indicate(and_gate_transistor1.right_horz_line),
+                run_time=3,
+                lag_ratio=.2,
+            ),
+        lag_ratio = .25,
+        run_time=6
+        ), 
+        )
 
-        # or_xor = VGroup()
+        or_xor = VGroup()
 
-        # xor_gate_transistor = Transistor(line_straight=False, shift_offset=[5,-1.5,0], scale_factor=0.25, rotation=PI/2)         
-        # xor_gate_transistor1 = Transistor(line_straight=False, shift_offset=[5,0.5,0], scale_factor=0.25, rotation=PI/2)
+        xor_gate_transistor = Transistor(line_straight=False, shift_offset=[5,-1.5,0], scale_factor=0.25, rotation=PI/2)         
+        xor_gate_transistor1 = Transistor(line_straight=False, shift_offset=[5,0.5,0], scale_factor=0.25, rotation=PI/2)
 
-        # or_xor.add(xor_gate_transistor, xor_gate_transistor1)
-        # or_xor.scale(0.75).shift([-.5, 0.5, 0])
+        or_xor.add(xor_gate_transistor, xor_gate_transistor1)
+        or_xor.scale(0.75).shift([-.5, 0.5, 0])
 
-        # and_xor = VGroup()
-        # xor_gate_transistor2 = Transistor(line_straight=False, shift_offset=[5,-1.5,0], scale_factor=0.25, rotation=PI/2)         
-        # xor_gate_transistor3 = Transistor(line_straight=False, shift_offset=[5,0.5,0], scale_factor=0.25, rotation=PI/2)  
-        # xor_gate_around_line1 = Line(xor_gate_transistor2.left_horz_line.get_end() + [0, 0.25, 0], xor_gate_transistor2.left_horz_line.get_end() + [1, 0.25, 0])
-        # xor_gate_around_line2 = Line(xor_gate_transistor2.right_horz_line.get_end() + [-0.6, 0, 0], xor_gate_transistor2.right_horz_line.get_end() + [0, 0, 0])
-        # xor_gate_around_line3 = Line(xor_gate_transistor3.right_horz_line.get_end() + [0, 0, 0], xor_gate_transistor3.right_horz_line.get_end() + [1, 0, 0])
-        # xor_gate_around_line4 = Line(xor_gate_transistor2.left_horz_line.get_end() + [1, 0.25, 0], xor_gate_transistor3.right_horz_line.get_end() + [1, 0, 0])
-        # and_to_or = Line(xor_gate_transistor1.right_horz_line.get_end() + [-0.04, 0, 0], xor_gate_transistor1.right_horz_line.get_end() + [-0.04, -2, 0])
+        and_xor = VGroup()
+        xor_gate_transistor2 = Transistor(line_straight=False, shift_offset=[5,-1.5,0], scale_factor=0.25, rotation=PI/2)         
+        xor_gate_transistor3 = Transistor(line_straight=False, shift_offset=[5,0.5,0], scale_factor=0.25, rotation=PI/2)  
+        xor_gate_around_line1 = Line(xor_gate_transistor2.left_horz_line.get_end() + [0, 0.25, 0], xor_gate_transistor2.left_horz_line.get_end() + [1, 0.25, 0])
+        xor_gate_around_line2 = Line(xor_gate_transistor2.right_horz_line.get_end() + [-0.6, 0, 0], xor_gate_transistor2.right_horz_line.get_end() + [0, 0, 0])
+        xor_gate_around_line3 = Line(xor_gate_transistor3.right_horz_line.get_end() + [0, 0, 0], xor_gate_transistor3.right_horz_line.get_end() + [1, 0, 0])
+        xor_gate_around_line4 = Line(xor_gate_transistor2.left_horz_line.get_end() + [1, 0.25, 0], xor_gate_transistor3.right_horz_line.get_end() + [1, 0, 0])
+        and_to_or = Line(xor_gate_transistor1.right_horz_line.get_end() + [-0.04, 0, 0], xor_gate_transistor1.right_horz_line.get_end() + [-0.04, -2, 0])
 
-        # a_inputs_horz_line = Line(xor_gate_transistor2.gate_middle_line.get_end(), xor_gate_transistor2.gate_middle_line.get_end() + [-1.5, 0, 0])
-        # b_inputs_horz_line = Line(xor_gate_transistor3.gate_middle_line.get_end(), xor_gate_transistor3.gate_middle_line.get_end() + [-1, 0, 0])
+        a_inputs_horz_line = Line(xor_gate_transistor2.gate_middle_line.get_end(), xor_gate_transistor2.gate_middle_line.get_end() + [-1.5, 0, 0])
+        b_inputs_horz_line = Line(xor_gate_transistor3.gate_middle_line.get_end(), xor_gate_transistor3.gate_middle_line.get_end() + [-1, 0, 0])
 
-        # a_inputs_vert_line = Line(a_inputs_horz_line.get_end(), a_inputs_horz_line.get_end() + [0, 3.57, 0])
-        # b_inputs_vert_line = Line(b_inputs_horz_line.get_end(), b_inputs_horz_line.get_end() + [0, 3.57, 0])
+        a_inputs_vert_line = Line(a_inputs_horz_line.get_end(), a_inputs_horz_line.get_end() + [0, 3.57, 0])
+        b_inputs_vert_line = Line(b_inputs_horz_line.get_end(), b_inputs_horz_line.get_end() + [0, 3.57, 0])
 
-        # a_inputs_horz_line_top = Line(a_inputs_vert_line.get_end(), a_inputs_vert_line.get_end() + [1, 0, 0])
-        # b_inputs_horz_line_top = Line(b_inputs_vert_line.get_end(), b_inputs_vert_line.get_end() + [0.5, 0, 0])
+        a_inputs_horz_line_top = Line(a_inputs_vert_line.get_end(), a_inputs_vert_line.get_end() + [1, 0, 0])
+        b_inputs_horz_line_top = Line(b_inputs_vert_line.get_end(), b_inputs_vert_line.get_end() + [0.5, 0, 0])
         
-        # xor_gate_io_text = [Text("A", font_size=16).shift(xor_gate_transistor.gate_middle_line.get_end() + [0, 0.2, 0]), 
-        #                    Text("B", font_size=16).shift(xor_gate_transistor1.gate_middle_line.get_end() + [0, 0.2, 0]), 
-        #                    Text("Out", font_size=16).shift([5.25, -3.4, 0])]
+        xor_gate_io_text = [Text("A", font_size=16).shift(xor_gate_transistor.gate_middle_line.get_end() + [0, 0.2, 0]), 
+                           Text("B", font_size=16).shift(xor_gate_transistor1.gate_middle_line.get_end() + [0, 0.2, 0]), 
+                           Text("Out", font_size=16).shift([5.25, -3.4, 0])]
 
-        # and_xor.add(xor_gate_transistor2, xor_gate_transistor3, xor_gate_around_line1, xor_gate_around_line2, xor_gate_around_line3, xor_gate_around_line4, and_to_or, a_inputs_horz_line, b_inputs_horz_line, 
-        # a_inputs_vert_line, b_inputs_vert_line, a_inputs_horz_line_top, b_inputs_horz_line_top)
+        and_xor.add(xor_gate_transistor2, xor_gate_transistor3, xor_gate_around_line1, xor_gate_around_line2, xor_gate_around_line3, xor_gate_around_line4, and_to_or, a_inputs_horz_line, b_inputs_horz_line, 
+        a_inputs_vert_line, b_inputs_vert_line, a_inputs_horz_line_top, b_inputs_horz_line_top)
 
         
         
-        # and_xor.scale(0.75).shift([0, -2.5, 0])
+        and_xor.scale(0.75).shift([0, -2.5, 0])
 
-        # self.play(FadeIn(or_xor), FadeIn(and_xor), *[Create(anim) for anim in xor_gate_io_text])
+        self.play(FadeIn(or_xor), FadeIn(and_xor), *[Create(anim) for anim in xor_gate_io_text])
 
-        # #add more animation here
+        #add more animation here
 
-        # self.play(FadeOut(and_xor), 
-        #           FadeOut(or_xor), 
-        #           FadeOut(and_gate), 
-        #           *[FadeOut(anim) for anim in xor_gate_io_text], 
-        #           *[FadeOut(anim) for anim in and_gate_io_text], 
-        #           FadeOut(or_gate_around_line1),
-        #           FadeOut(or_gate_around_line2),
-        #           FadeOut(or_gate_around_line3),
-        #           FadeOut(or_gate_around_line4),
-        #           *[FadeOut(anim) for anim in or_gate_io_text],
-        #           FadeOut(or_gate_transistor, or_gate_transistor1),
-        #           FadeOut(not_gate_transistor),
-        #           *[FadeOut(anim) for anim in not_gate_io_text]
-        #           )
+        self.play(FadeOut(and_xor), 
+                  FadeOut(or_xor), 
+                  FadeOut(and_gate), 
+                  *[FadeOut(anim) for anim in xor_gate_io_text], 
+                  *[FadeOut(anim) for anim in and_gate_io_text], 
+                  FadeOut(or_gate_around_line1),
+                  FadeOut(or_gate_around_line2),
+                  FadeOut(or_gate_around_line3),
+                  FadeOut(or_gate_around_line4),
+                  *[FadeOut(anim) for anim in or_gate_io_text],
+                  FadeOut(or_gate_transistor, or_gate_transistor1),
+                  FadeOut(not_gate_transistor),
+                  *[FadeOut(anim) for anim in not_gate_io_text]
+                  )
 
 ##################################################################
 #END ACT 3
