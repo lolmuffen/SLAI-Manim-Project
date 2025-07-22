@@ -73,6 +73,24 @@ class OrGateSymbol(VMobject):
         self.shift(shift_offset).rotate(rotation).scale(scale_factor)
 
 
+class HalfAdder(VMobject):
+    
+    def __init__(self, shift_offset=0, rotation=0, scale_factor=1, **kwargs):
+        super().__init__(**kwargs)
+        ha_xor_gate = XorGateSymbol(shift_offset=[0, -.75, 0], scale_factor=0.5)
+        ha_and_gate = AndGateSymbol(shift_offset=[0, -2, 0], scale_factor=0.5)
+
+        vert_input_line_A = Line(ha_and_gate.input_line_top.get_start(), ha_and_gate.input_line_top.get_start() + [0, .75, 0])
+        vert_input_line_B = Line(ha_and_gate.input_line_bottom.get_start() + [-0.25, 0, 0], ha_and_gate.input_line_bottom.get_start() + [-0.25, 1.75, 0])
+        horz_input_line_A_bottom = Line(ha_and_gate.input_line_bottom.get_start() + [-0.25, 0, 0], ha_and_gate.input_line_bottom.get_start())
+
+        horz_input_line_A = Line(vert_input_line_A.get_end(), vert_input_line_A.get_end() + [-1, 0, 0])
+        horz_input_line_B = Line(ha_xor_gate.input_line_top.get_start(), ha_xor_gate.input_line_top.get_end() + [-1.5, 0, 0])
+
+        self.add(ha_xor_gate, ha_and_gate, vert_input_line_A, vert_input_line_B, horz_input_line_A, horz_input_line_B, horz_input_line_A_bottom)
+        self.shift(shift_offset).rotate(rotation).scale(scale_factor)
+
+
 class Transistor(VMobject):
     def __init__(self, line_straight=True, shift_offset=0, rotation=0, scale_factor=1, invert_letters=False, **kwargs):
         super().__init__(**kwargs)
@@ -389,30 +407,84 @@ class Play(Scene):
         self.play(FadeOut(or_table), FadeOut(and_table), FadeOut(xor_table), FadeOut(not_table), 
                   FadeOut(orGate), FadeOut(andGate), FadeOut(notGate), FadeOut(xorGate),
                   FadeOut(not_gate_text), FadeOut(or_gate_text), FadeOut(and_gate_text), FadeOut(xor_gate_text))
-#######################################################################
-#END ACT 5
+# #######################################################################
+# #END ACT 5
 
         self.wait(1)
         sequential_text = Text("Combintational vs Sequential", font_size=60).shift([0, 1, 0])
         self.play(FadeIn(sequential_text))
         
-        ha_xor_gate = XorGateSymbol(shift_offset=[-3, -.75, 0], scale_factor=0.5)
-        ha_and_gate = AndGateSymbol(shift_offset=[-3, -2, 0], scale_factor=0.5)
+        half_adder = HalfAdder(shift_offset=[-3, 0, 0], scale_factor=0.75)
+        self.play(FadeIn(half_adder))
 
-        vert_input_line_A = Line(ha_and_gate.input_line_top.get_start(), ha_and_gate.input_line_top.get_start() + [0, .75, 0])
-        vert_input_line_B = Line(ha_and_gate.input_line_bottom.get_start() + [-0.25, 0, 0], ha_and_gate.input_line_bottom.get_start() + [-0.25, 1.75, 0])
-        horz_input_line_A_bottom = Line(ha_and_gate.input_line_bottom.get_start() + [-0.25, 0, 0], ha_and_gate.input_line_bottom.get_start())
-
-        horz_input_line_A = Line(vert_input_line_A.get_end(), vert_input_line_A.get_end() + [-1, 0, 0])
-        horz_input_line_B = Line(ha_xor_gate.input_line_top.get_start(), ha_xor_gate.input_line_top.get_end() + [-1.5, 0, 0])
-
-        self.play(FadeIn(ha_xor_gate), 
-                  FadeIn(ha_and_gate), 
-                  FadeIn(vert_input_line_A), 
-                  FadeIn(vert_input_line_B), 
-                  FadeIn(horz_input_line_A), 
-                  FadeIn(horz_input_line_B), 
-                  FadeIn(horz_input_line_A_bottom))
-
-        seq_or_gate = OrGateSymbol(shift_offset=[3, -1.5, 0], scale_factor=0.5)
+        seq_or_gate_group = VGroup()
+        seq_or_gate = OrGateSymbol(shift_offset=[2, -1, 0], scale_factor=0.5)
         seq_or_extention = Line(seq_or_gate.output_line.get_end(), seq_or_gate.output_line.get_end() + [1, 0, 0])
+        seq_vertical_line_front = Line(seq_or_gate.output_line.get_end(), seq_or_gate.output_line.get_end() + [0, -1, 0])
+        seq_back_line = Line(seq_vertical_line_front.get_end(), seq_vertical_line_front.get_end() + [-1.95, 0, 0])
+        seq_vertical_line_back = Line(seq_back_line.get_end(), seq_back_line.get_end() + [0, .75, 0])
+        seq_or_gate_group.add(seq_or_gate, seq_or_extention, seq_vertical_line_front, seq_back_line, seq_vertical_line_back)
+       
+        self.play(FadeIn(seq_or_gate_group))
+        
+        self.wait(1)
+
+        self.play(FadeOut(sequential_text), 
+                  FadeOut(half_adder), 
+                  FadeOut(seq_or_gate_group))
+
+
+#################################################################################################################
+# END ACT 6
+        decimal_text = Text("Decimal", font_size=54).shift([-2, 2, 0])
+        binary_text = Text("Binary", font_size=54).shift([2, 2, 0])
+        
+        decimal_table = VGroup(Square(1).shift([-1.5, 0, 0]), Square(1).shift([-2.5, 0, 0]))
+        binary_table = VGroup(Square(1).shift([1.5, 0, 0]), Square(1).shift([2.5, 0, 0]))
+
+        binary_number = Text("1").move_to([2.5, 0, 0])
+        decimal_number = Text("9").move_to([-1.5, 0, 0])
+
+
+        decimal_value = Text(f"Value: nine").move_to([-2, -2, 0])
+        binary_value = Text(f"Value: one").move_to([2, -2, 0])
+
+        self.play(FadeIn(decimal_text), 
+                  FadeIn(binary_text), 
+                  FadeIn(decimal_table),
+                  FadeIn(binary_table),
+                  FadeIn(binary_number),
+                  FadeIn(decimal_number),
+                  FadeIn(decimal_value),
+                  FadeIn(binary_value))
+        
+        
+        self.wait(2)
+
+        plus_one_text_binary = Text("+1", font_size=54).shift([2.5, -1, 0])
+        plus_one_text_decimal = Text("+1", font_size=54).shift([-1.5, -1, 0])
+
+
+        self.play(FadeIn(plus_one_text_binary), 
+                  plus_one_text_binary.animate().shift([0, 1, 0]),
+                  binary_number.animate().shift([-1, 0, 0]),
+                  ReplacementTransform(binary_value, Text("Value: two").move_to([2, -2, 0])),
+                  FadeIn(Text("0").shift([2.5, 0, 0])),
+                  run_time = 0.75
+                  )
+        
+        self.play(FadeOut(plus_one_text_binary), run_time=0.5)
+
+        self.wait(1)
+
+        self.play(FadeIn(plus_one_text_decimal),
+                  plus_one_text_decimal.animate().shift([0, 1, 0]),
+                  decimal_number.animate().shift([-1, 0, 0]),
+                  Transform(decimal_number, Text("1").move_to([-2.5, 0, 0])),
+                  ReplacementTransform(decimal_value, Text("Value: ten").move_to([-2, -2, 0])),
+                  FadeIn(Text("0").shift([-1.5, 0, 0])),
+                  run_time = 0.75
+
+                )
+        
+        self.play(FadeOut(plus_one_text_decimal))
