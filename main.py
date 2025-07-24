@@ -729,6 +729,8 @@ class Play(Scene):
             FadeIn(carry_from_right_vert),
         )
 
+
+
         self.wait(1)
 
         FAVGroup.add(
@@ -745,6 +747,8 @@ class Play(Scene):
             carry_from_right_horz,
             carry_from_right_vert,
         )
+
+        self.play(Indicate(FAVGroup))
 
         self.play(
             FAVGroup.animate.scale(0.004),
