@@ -846,6 +846,18 @@ class Play(Scene):
         self.play(
             AnimationGroup(
                     AnimationGroup(
+                        Indicate(sr_latch_not_gate.output_line),
+                        Indicate(sr_latch_not_and_horz),
+                        Indicate(sr_latch_reset_line_vert),
+                        Indicate(sr_latch_and_gate.input_line_bottom),
+                    
+                        run_time=4,
+                        rate_func=lambda x : 0.5,
+                    ),
+                    Indicate(sr_latch_reset_line_input),
+                ),
+            AnimationGroup (
+                    AnimationGroup(
                         Indicate(sr_latch_set_line_input),
                         Indicate(sr_latch_or_gate.input_line_bottom),
                     ),
@@ -872,26 +884,17 @@ class Play(Scene):
                     Indicate(sr_latch_loop_line),
                     Indicate(sr_latch_or_gate.input_line_top),
                     Indicate(sr_latch_or_gate.body, color=GREEN),
-                    Indicate(sr_latch_or_and_horz),
-                    Indicate(sr_latch_or_and_vert),
-                    Indicate(sr_latch_and_gate.input_line_top),
-                    Indicate(sr_latch_and_gate.body, color=GREEN),
-                    Indicate(sr_latch_and_gate.output_line),
-                    Indicate(sr_latch_and_gate.output_line),
+                    AnimationGroup(
+                        Indicate(sr_latch_or_and_horz),
+                        Indicate(sr_latch_or_and_vert),
+                        Indicate(sr_latch_and_gate.input_line_top),
+                        Indicate(sr_latch_and_gate.body, color=RED),
+                    ),
+                    
                     run_time=4,
                     lag_ratio=0.2,
-                  ),
-                  AnimationGroup(
-                      AnimationGroup(
-                          Indicate(sr_latch_not_gate.output_line),
-                          Indicate(sr_latch_not_and_horz),
-                          
-                          ),
-                          run_time=4,
-                          ),
-                    
-                  )
-                  
+                ),
+            )
 
         self.wait(1)
 
