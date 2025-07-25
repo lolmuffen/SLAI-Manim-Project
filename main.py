@@ -52,6 +52,8 @@ class XorGateSymbol(VMobject):
     def __init__(self, shift_offset=0, rotation=0, scale_factor=1, **kwargs):
         super().__init__(**kwargs)
 
+        self.body = VGroup()
+
         self.back_line_inner = Line(UP, DOWN, path_arc=-0.2 * PI)
         self.back_line_outer = Line(UP * 0.75, DOWN * 0.75, path_arc=-0.2 * PI).shift(
             [-0.25, 0, 0]
@@ -64,11 +66,13 @@ class XorGateSymbol(VMobject):
             self.back_line_inner.get_start(), RIGHT * 2, path_arc=-0.25 * PI
         )
 
+        self.body.add(self.back_line_inner, self.back_line_outer, self.front_line_bottom, self.front_line_top)
+
         self.input_line_top = Line(LEFT + [-0.2, 0.5, 0], ORIGIN + [-0.2, 0.5, 0])
         self.input_line_bottom = Line(LEFT + [-0.2, -0.5, 0], ORIGIN + [-0.2, -0.5, 0])
 
         self.output_line = Line(RIGHT + [1, 0, 0], RIGHT + [2, 0, 0])
-
+    
         self.add(
             self.back_line_inner,
             self.back_line_outer,
@@ -77,6 +81,7 @@ class XorGateSymbol(VMobject):
             self.input_line_top,
             self.input_line_bottom,
             self.output_line,
+            self.body
         )
         self.shift(shift_offset).rotate(rotation).scale(scale_factor)
 
@@ -671,108 +676,179 @@ class Play(Scene):
         HAVGroup.add(halfAdderTitle, half_add_table)
         self.play(Create(half_adder), FadeIn(half_add_table), Create(halfAdderTitle))
 
-
+        self.play(
+            AnimationGroup(
+                AnimationGroup(
+                    Indicate(half_adder.horz_input_line_A),
+                    Indicate(half_adder.ha_xor_gate.input_line_top),
+                    Indicate(half_adder.ha_xor_gate.body, color=RED),
+                    Indicate(half_adder.vert_input_line_B),
+                    Indicate(half_adder.ha_and_gate.input_line_bottom),
+                    Indicate(half_adder.ha_and_gate.body, color=GREEN),
+                    Indicate(half_adder.ha_and_gate.output_line),
+                    lag_ratio=.2,
+                    run_time=2,
+                ),
+                AnimationGroup(
+                    Indicate(half_adder.horz_input_line_B),
+                    Indicate(half_adder.ha_xor_gate.input_line_bottom),
+                    Indicate(half_adder.ha_xor_gate.body, color=RED),
+                    Indicate(half_adder.vert_input_line_A),
+                    Indicate(half_adder.ha_and_gate.input_line_top),
+                    Indicate(half_adder.ha_and_gate.body, color=GREEN),
+                    Indicate(half_adder.ha_and_gate.output_line),
+                    lag_ratio=.2,
+                    run_time=2,
+                ),
+            ),
+        )
 
         self.wait(3)
 
         self.play(FadeOut(HAVGroup), half_adder.animate().move_to([-2.625, 0.625, 0]))
 
-        ###############################################################################################
-        # END ACT 8
+        # ##############################################################################################
+        # # END ACT 8
 
-        FAVGroup = VGroup()
+        # FAVGroup = VGroup()
 
-        half_adder_left = half_adder
-        half_adder_right = HalfAdder(shift_offset=[7, 1, 0])
-        carry_or_gate = OrGateSymbol(shift_offset=[3, 2, 0], scale_factor=0.5)
+        # half_adder_left = half_adder
+        # half_adder_right = HalfAdder(shift_offset=[7, 1, 0])
+        # carry_or_gate = OrGateSymbol(shift_offset=[3, 2, 0], scale_factor=0.5)
 
-        self.play(
-            FadeIn(half_adder_right),
-            half_adder_right.animate().shift([-6, 0, 0]),
-            FadeIn(carry_or_gate),
-        )
+        # self.play(
+        #     FadeIn(half_adder_right),
+        #     half_adder_right.animate().shift([-6, 0, 0]),
+        #     FadeIn(carry_or_gate),
+        # )
 
-        sum_to_A_vert = Line(
-            half_adder_right.horz_input_line_B.get_end() + [0, 0, 0],
-            half_adder_right.horz_input_line_B.get_end() + [0, 0.75, 0],
-        )
+        # sum_to_A_vert = Line(
+        #     half_adder_right.horz_input_line_B.get_end() + [0, 0, 0],
+        #     half_adder_right.horz_input_line_B.get_end() + [0, 0.75, 0],
+        # )
 
-        sum_to_A_horz = Line(
-            sum_to_A_vert.get_end(), sum_to_A_vert.get_end() + [-1, 0, 0]
-        )
+        # sum_to_A_horz = Line(
+        #     sum_to_A_vert.get_end(), sum_to_A_vert.get_end() + [-1, 0, 0]
+        # )
 
-        carry_from_left_vert = Line(
-            half_adder_left.ha_and_gate.output_line.get_end() + [0, 0, 0],
-            half_adder_left.ha_and_gate.output_line.get_end() + [0, 2.25, 0],
-        )
+        # carry_from_left_vert = Line(
+        #     half_adder_left.ha_and_gate.output_line.get_end() + [0, 0, 0],
+        #     half_adder_left.ha_and_gate.output_line.get_end() + [0, 2.25, 0],
+        # )
 
-        carry_from_left_horz = Line(
-            carry_from_left_vert.get_end(), carry_from_left_vert.get_end() + [4.5, 0, 0]
-        )
+        # carry_from_left_horz = Line(
+        #     carry_from_left_vert.get_end(), carry_from_left_vert.get_end() + [4.5, 0, 0]
+        # )
 
-        carry_in_horz = Line([-4, -1, 0], [-0.1, -1, 0])
-        carry_in_vert = Line(
-            carry_in_horz.get_end(), carry_in_horz.get_end() + [0, 1, 0]
-        )
+        # carry_in_horz = Line([-4, -1, 0], [-0.1, -1, 0])
+        # carry_in_vert = Line(
+        #     carry_in_horz.get_end(), carry_in_horz.get_end() + [0, 1, 0]
+        # )
 
-        sum_out_line = Line(
-            half_adder_right.ha_xor_gate.output_line.get_end() + [0, 0, 0],
-            half_adder_right.ha_xor_gate.output_line.get_end() + [2, 0, 0],
-        )
+        # sum_out_line = Line(
+        #     half_adder_right.ha_xor_gate.output_line.get_end() + [0, 0, 0],
+        #     half_adder_right.ha_xor_gate.output_line.get_end() + [2, 0, 0],
+        # )
 
-        carry_from_right_horz = Line(
-            half_adder_right.ha_and_gate.output_line.get_end() + [0, 0, 0],
-            half_adder_right.ha_and_gate.output_line.get_end() + [0.5, 0, 0],
-        )
+        # carry_from_right_horz = Line(
+        #     half_adder_right.ha_and_gate.output_line.get_end() + [0, 0, 0],
+        #     half_adder_right.ha_and_gate.output_line.get_end() + [0.5, 0, 0],
+        # )
 
-        carry_from_right_vert = Line(
-            carry_from_right_horz.get_end(),
-            carry_from_right_horz.get_end() + [0, 2.75, 0],
-        )
+        # carry_from_right_vert = Line(
+        #     carry_from_right_horz.get_end(),
+        #     carry_from_right_horz.get_end() + [0, 2.75, 0],
+        # )
 
-        self.play(
-            FadeIn(sum_to_A_vert),
-            FadeIn(sum_to_A_horz),
-            FadeIn(carry_from_left_vert),
-            FadeIn(carry_from_left_horz),
-            FadeIn(carry_in_horz),
-            FadeIn(carry_in_vert),
-            FadeIn(sum_out_line),
-            FadeIn(carry_from_right_horz),
-            FadeIn(carry_from_right_vert),
-        )
+        # self.play(
+        #     FadeIn(sum_to_A_vert),
+        #     FadeIn(sum_to_A_horz),
+        #     FadeIn(carry_from_left_vert),
+        #     FadeIn(carry_from_left_horz),
+        #     FadeIn(carry_in_horz),
+        #     FadeIn(carry_in_vert),
+        #     FadeIn(sum_out_line),
+        #     FadeIn(carry_from_right_horz),
+        #     FadeIn(carry_from_right_vert),
+        # )
 
 
 
-        self.wait(1)
+        # self.wait(1)
 
-        FAVGroup.add(
-            half_adder_left,
-            half_adder_right,
-            carry_or_gate,
-            sum_to_A_vert,
-            sum_to_A_horz,
-            carry_from_left_vert,
-            carry_from_left_horz,
-            carry_in_horz,
-            carry_in_vert,
-            sum_out_line,
-            carry_from_right_horz,
-            carry_from_right_vert,
-        )
+        # FAVGroup.add(
+        #     half_adder_left,
+        #     half_adder_right,
+        #     carry_or_gate,
+        #     sum_to_A_vert,
+        #     sum_to_A_horz,
+        #     carry_from_left_vert,
+        #     carry_from_left_horz,
+        #     carry_in_horz,
+        #     carry_in_vert,
+        #     sum_out_line,
+        #     carry_from_right_horz,
+        #     carry_from_right_vert,
+        # )
 
-        self.play(Indicate(FAVGroup))
+        # self.play(
+        #     AnimationGroup(
+        #         AnimationGroup(
+        #             Indicate(half_adder_left.horz_input_line_A),
+        #             Indicate(half_adder_left.ha_xor_gate.input_line_top),
+        #             Indicate(half_adder_left.ha_xor_gate.body, color=RED),
+        #             Indicate(half_adder.vert_input_line_A),
+        #             Indicate(half_adder_left.ha_and_gate.input_line_bottom),
+        #             Indicate(half_adder_left.ha_and_gate.body, color=GREEN),
+        #             Indicate(half_adder_left.ha_and_gate.output_line),
+        #             Indicate(carry_from_left_vert),
+        #             Indicate(carry_from_left_horz),
+        #             Indicate(carry_or_gate.body, color=GREEN),
+        #             Indicate(carry_or_gate.output_line),
+        #         lag_ratio=.2,
+        #         run_time=3,
+        #         ),
+        #         AnimationGroup(
+        #             Indicate(half_adder_left.horz_input_line_B),
+        #             Indicate(half_adder_left.ha_xor_gate.input_line_bottom),
+        #             Indicate(half_adder_left.ha_xor_gate.body, color=RED),
+        #             Indicate(half_adder.vert_input_line_B),
+        #             Indicate(half_adder_left.ha_and_gate.input_line_top),
+        #             Indicate(half_adder_left.ha_and_gate.body, color=GREEN),
+        #             Indicate(half_adder_left.ha_and_gate.output_line),
+        #             Indicate(carry_from_left_vert),
+        #             Indicate(carry_from_left_horz),
+        #             Indicate(carry_or_gate.body, color=GREEN),
+        #             Indicate(carry_or_gate.output_line),
+        #         lag_ratio=.2,
+        #         run_time=3,
+        #         ),  
+        #         AnimationGroup(
+        #             Indicate(carry_in_horz),
+        #             Indicate(carry_in_vert),
+        #             Indicate(half_adder_right.horz_input_line_A),
+        #             Indicate(half_adder_right.ha_xor_gate.input_line_bottom),
+        #             Indicate(half_adder_right.ha_xor_gate.body, color=GREEN),
+        #             Indicate(half_adder_right.vert_input_line_A),
+        #             Indicate(half_adder_right.ha_and_gate.input_line_top),
+        #             Indicate(half_adder_right.ha_and_gate.body, color=RED),
+        #             Indicate(half_adder_right.ha_xor_gate.output_line),
+        #             Indicate(sum_out_line),
+        #         lag_ratio=.2,
+        #         run_time=3,
+        #         ),
 
-        self.play(
-            FAVGroup.animate.scale(0.004),
-            FadeIn(IntroAdderVGroup),
-            FadeOut(FAVGroup),
-            IntroAdderVGroup.animate.scale(0.004).shift([5, 5, 0]),
-            run_time=1.5,
-            rate_func=linear,
-        )
+        #     ),
+        # )
 
-        
+        # self.play(
+        #     FAVGroup.animate.scale(0.004),
+        #     FadeIn(IntroAdderVGroup),
+        #     FadeOut(FAVGroup),
+        #     IntroAdderVGroup.animate.scale(0.004).shift([5, 5, 0]),
+        #     run_time=1.5,
+        #     rate_func=linear,
+        # )
 
         self.wait(1)
 
