@@ -1020,3 +1020,5 @@ class Play(Scene):
                     FadeIn(d_latch_mux_connector),
                     FadeIn(d_latch_mux_output),
                     )
+        
+        #for the power of 2!!!!!!!!!!!!!
